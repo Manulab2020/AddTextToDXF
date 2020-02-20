@@ -173,7 +173,6 @@ with open('info.csv') as csvfile:
 _info = ', '.join(_info)
 _info = _info.replace(',', '')
 _info = _info.split(";")
-
 '''
  Deletes the dxf file before saving the new file, also ignores exception FileNotFoundError if file does not exist
 '''
@@ -198,18 +197,13 @@ _ySize = float(_info[8])  # ySizeInmm
 _rotLogo = float(_info[9])  # rotationLogo
 
 _my_image_def = _doc.add_image_def(filename=_logoFileName, size_in_pixel=(_xPixel, _yPixel))
-_image = _msp.add_image(image_def=_my_image_def, insert=(_xInsert, _yInsert), size_in_units=(_xSize, _ySize), rotation=_rotLogo)
-
+_image = _msp.add_image(image_def=_my_image_def, insert=(_xInsert, _yInsert), size_in_units=(_xSize, _ySize),
+                        rotation=_rotLogo)
 '''
  Add name text from input
 '''
 _textFileName = str(_info[10])  # textToInsert
 _textStyle = str(_info[11])  # textStyle
-
-_strName = _textFileName.replace('\n', ' ')
-
-_strNameLen = int(float(_info[18]))
-_strName = _strName[:_strNameLen]
 
 _xLoc = float(_info[12])  # xInsertPointText
 _yLoc = float(_info[13])  # yInsertPointText
@@ -217,11 +211,14 @@ _rotation = float(_info[14])  # rotationText
 _alignment = int(float(_info[15]))  # alignmentText
 _textWidth = float(_info[16])  # textWidth
 _textHeight = float(_info[17])  # textHeight
+_strNameLen = int(float(_info[18]))  # strNameLen
+
+_strName = _textFileName.replace('\n', ' ')
+_strName = _strName[:_strNameLen]
 
 _mtext = _msp.add_mtext(_strName, dxfattribs={'style': _textStyle}).set_location((_xLoc, _yLoc), _rotation, _alignment)
 _mtext.dxf.width = _textWidth
 _mtext.dxf.char_height = _textHeight
-
 '''
  Save the new file
 '''
